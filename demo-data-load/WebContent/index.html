@@ -1,0 +1,628 @@
+<!-- 
+	* Copyright IBM Corp. 2015
+	*
+	* Licensed under the Apache License, Version 2.0 (the "License");
+	* you may not use this file except in compliance with the License.
+	* You may obtain a copy of the License at
+	*
+	* http://www.apache.org/licenses/LICENSE-2.0
+	*
+	* Unless required by applicable law or agreed to in writing, software
+	* distributed under the License is distributed on an "AS IS" BASIS,
+	* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	* See the License for the specific language governing permissions and
+	* limitations under the License.
+ -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Cache-Control" content="NO-CACHE">
+        <meta http-equiv="Pragma" content="NO-CACHE">
+        <meta http-equiv="Expires" content="-1">
+		<title>Bluemix IBM DataWorks Sample App</title>
+		<script src="https://code.jquery.com/jquery-1.6.4.min.js"></script>
+		<script src="js/script.js"></script>
+		<link rel="stylesheet" href="resources/css/document.css" type="text/css">
+		<link rel="stylesheet" href="resources/css/bluemixapp.css" type="text/css">
+		<link rel="stylesheet" href="resources/css/refinery.css" type="text/css">
+		<link rel="icon"       href="resources/images/DATAWORKS_24.png" type="image/png" >
+		<script>
+			// force https
+			if (window.location.protocol != "https:") {
+              	window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+        	}
+		</script>
+	</head>
+		
+	<body>
+		<div class="headerContainer">
+			<img class="headerLogo" alt="infosphere logo" src="resources/images/logo.png">
+			<a class="headerLink" href="#loadData">Data Load</a>
+			<a class="headerLink" style="float: right;" target="_blank" href="https://www.ng.bluemix.net/docs/api/content/api/dataworks/data-load/index.html">Data Load REST API Reference</a>
+		</div>
+		
+		<div class="contentContainer">
+			<h1>Source</h1>
+			<div id="inputContainer" class="valueContainer processed">
+				<form id="srcConnectionForm">
+				   <label for="sourceSystemSelect">Source connection:</label>
+				   <select name="sourceSystemSelect" id="sourceSystemSelect" autofocus>
+					  <option value="SQLDB" selected>SQL Database</option>
+					  <option value="DASHDB">dashDB</option> 
+					  <option value="ORACLEODBC">Oracle</option>  
+					  <!-- <option value="HADOOP">Analytics for Hadoop (csv)</option>  -->
+					  <option value="OBJECTSTORAGE">SoftLayer Object Storage (csv)</option>
+					  <option value="AMAZONS3">Amazon S3 (csv)</option>
+					  <option value="SALESFORCE">Salesforce</option>
+					  <option value="REDSHIFT">Redshift</option>
+					  <option value="MYSQL">MySql</option>
+					  <!-- <option value="POSTGRESQL">PostgreSql</option>  -->
+					  <option value="HIVE">Hive</option>
+					  <option value="SYBASE">Sybase</option>
+					  <option value="SYBASEIQ">SybaseIQ</option>
+					  <option value="INFORMIX">Informix</option>
+					  <option value="GREENPLUM">Greenplum</option>
+					  <option value="PROGRESS">Progress</option>
+					  <option value="IMPALA">Impala</option>
+				   </select><br>
+				   
+					<!--  SOURCE: Show fields for SQLDB, DashDB -->
+				   <div id="SQL_DASHDB_Fields">
+					   <label for="srcHostInput">Host:</label>
+					   <input type="text" name="srcHostInput" id="srcHostInput" value="" /><br>
+	
+					   <label for="srcPortInput">Port:</label>
+					   <input type="text" name="srcPortInput" id="srcPortInput" value="" /><br>
+	
+					   <label for="srcDatabaseInput">Database:</label>
+					   <input type="text" name="srcDatabaseInput" id="srcDatabaseInput" value="" /><br>
+					   
+					   <label for="srcSchemaInput">Schema:</label>
+					   <input type="text" name="srcSchemaInput" id="srcSchemaInput" value="" /><br>
+					   
+					   <label for="srcUsernameInput">User name:</label>
+					   <input type="text" name="srcUsernameInput" id="srcUsernameInput" value="" /><br>
+					   
+					   <label for="srcPasswordInput">Password:</label>
+					   <input type="password" name="srcPasswordInput" id="srcPasswordInput" value=""/><br>
+					   
+				   	   <label for="srcTableInput">Table:</label>
+				       <input type="text" name="srcTableInput" id="srcTableInput" value="" /><br>    					   
+					   
+				   </div>
+				   
+				   <!--  SOURCE:  Show fields for Oracle -->
+				   <div id="ORACLEODBC_Fields">
+					   <label for="srcORACHostInput">Host:</label>
+					   <input type="text" name="srcORACHostInput" id="srcORACHostInput" value="" /><br>
+	
+					   <label for="srcORACPortInput">Port:</label>
+					   <input type="text" name="srcORACPortInput" id="srcORACPortInput" value="" /><br>
+	
+					   <label for="srcORACSchemaInput">Schema:</label>
+					   <input type="text" name="srcORACSchemaInput" id="srcORACSchemaInput" value="" /><br>
+					   
+					   <label for="srcORACUsernameInput">User name:</label>
+					   <input type="text" name="srcORACUsernameInput" id="srcORACUsernameInput" value="" /><br>
+					   
+					   <label for="srcORACPasswordInput">Password:</label>
+					   <input type="password" name="srcORACPasswordInput" id="srcORACPasswordInput" value=""/><br>
+					   
+				   		<label for="srcORACSIDInput" class="oracle">Oracle SID:</label>
+                   		<input type="text" name="srcORACSIDInput" id="srcORACSIDInput" value="" /><br>
+                   		<!-- 
+                   		<label for="srcORACSSLCert" class="oracle">SSL certificate:</label>
+                    	<textarea id="srcORACSSLCert" name="srcORACSSLCert" rows="5" cols="35"></textarea><br>
+                    	 -->  
+                    	
+				   	   <label for="srcORACTableInput">Table:</label>
+				       <input type="text" name="srcORACTableInput" id="srcORACTableInput" value="" /><br>    					   
+				   
+                    </div>
+             
+             		<!--  SOURCE:  Show fields for HADOOP 	-->
+				   <div id="HADOOP_Fields">
+					   <label for="srcHadoopHostInput">Host:</label>
+					   <input type="text" name="srcHadoopHostInput" id="srcHadoopHostInput" value="" /><br>
+	
+					   <label for="srcHadoopPortInput">Port:</label>
+					   <input type="text" name="srcHadoopPortInput" id="srcHadoopPortInput" value="" /><br>
+					   
+					   <label for="srcHadoopUsernameInput">User name:</label>
+					   <input type="text" name="srcHadoopUsernameInput" id="srcHadoopUsernameInput" value="" /><br>
+					   
+					   <label for="srcHadoopPasswordInput">Password:</label>
+					   <input type="password" name="srcHadoopPasswordInput" id="srcHadoopPasswordInput" value=""/><br>
+					   
+					   <label for="srcHadoopFolderPathInput">Folder path:</label>
+					   <input type="text" name="srcHadoopFolderPathInput" id="srcHadoopFolderPathInput" value="" /><br>
+					   
+				       <label for="srcHadoopTableInput">File:</label>
+				       <input type="text" name="srcHadoopTableInput" id="srcHadoopTableInput" value="" /><br>    					   
+				   </div>                  
+				   
+				   <!--  SOURCE:  Show fields for Object Storage (SWIFT)   -->
+				   <div id="OBJECTSTORAGE_Fields">
+					   <label for="srcObjURLInput">Login URL:</label>
+					   <input type="text" name="srcObjURLInput" id="srcObjURLInput" value="" /><br>
+	
+					   <label for="srcObjContainerInput">Container:</label>
+					   <input type="text" name="srcObjContainerInput" id="srcObjContainerInput" value="" /><br>
+					   
+					   <label for="srcObjAccessKeyInput">Access key:</label>
+					   <input type="text" name="srcObjAccessKeyInput" id="srcObjAccessKeyInput" value="" /><br>
+					   
+					   <label for="srcObjSecretKeyInput">Secret key:</label>
+					   <input type="text" name="srcObjSecretKeyInput" id="srcObjSecretKeyInput" value=""/><br>
+
+				       <label for="srcObjTableInput">File:</label>
+				       <input type="text" name="srcObjTableInput" id="srcObjTableInput" value="" /><br>    					   
+					   
+				   </div>                  
+
+				   <!--  SOURCE:  Show fields for AMAZON S3   -->
+				   <div id="AMAZONS3_Fields">
+					   <label for="srcS3RegionInput">Region:</label>
+					   <input type="text" name="srcS3RegionInput" id="srcS3RegionInput" value="" /><br>
+	
+					   <label for="srcS3BucketInput">Bucket:</label>
+					   <input type="text" name="srcS3BucketInput" id="srcS3BucketInput" value="" /><br>
+					   
+					   <label for="srcS3AccessKeyInput">Access key:</label>
+					   <input type="text" name="srcS3AccessKeyInput" id="srcS3AccessKeyInput" value="" /><br>
+					   
+					   <label for="srcS3SecretKeyInput">Secret key:</label>
+					   <input type="text" name="srcS3SecretKeyInput" id="srcS3SecretKeyInput" value=""/><br>
+					   
+				       <label for="srcS3TableInput">File:</label>
+				       <input type="text" name="srcS3TableInput" id="srcS3TableInput" value="" /><br>    						   
+				   </div>
+				   
+				   <!--  SOURCE:  Show fields for Salesforce   -->
+				   <div id="SALESFORCE_Fields">
+					   <label for="srcSFUsernameInput">User name:</label>
+					   <input type="text" name="srcSFUsernameInput" id="srcSFUsernameInput" value="" /><br>
+					   
+					   <label for="srcSFPasswordInput">Password:</label>
+					   <input type="password" name="srcSFPasswordInput" id="srcSFPasswordInput" value=""/><br>
+					   
+				   	   <label for="srcSFTableInput">Table:</label>
+				       <input type="text" name="srcSFTableInput" id="srcSFTableInput" value="" /><br>    					   
+				   </div>
+				   
+				   <!--  SOURCE:  Show fields for ODBC/JDBC (redshift, etc.) types -->
+				   <div id="ODBC_Fields">
+					   <label for="srcODBCHostInput">Host:</label>
+					   <input type="text" name="srcODBCHostInput" id="srcODBCHostInput" value="" /><br>
+	
+					   <label for="srcODBCPortInput">Port:</label>
+					   <input type="text" name="srcODBCPortInput" id="srcODBCPortInput" value="" /><br>
+	
+					   <label for="srcODBCSchemaInput">Schema:</label>
+					   <input type="text" name="srcODBCSchemaInput" id="srcODBCSchemaInput" value="" /><br>
+					   
+					   <label for="srcODBCUsernameInput">User name:</label>
+					   <input type="text" name="srcODBCUsernameInput" id="srcODBCUsernameInput" value="" /><br>
+					   
+					   <label for="srcODBCPasswordInput">Password:</label>
+					   <input type="password" name="srcODBCPasswordInput" id="srcODBCPasswordInput" value=""/><br>
+					   
+				   		<label for="srcODBCDatabase">Database:</label>
+                   		<input type="text" name="srcODBCDatabaseInput" id="srcODBCDatabaseInput" value="" /><br>
+                   		
+				   	   <label for="srcODBCTableInput">Table:</label>
+				       <input type="text" name="srcODBCTableInput" id="srcODBCTableInput" value="" /><br>    					   
+				   
+                    </div>
+                    
+				   <!--  SOURCE:  Show fields for Informix type (requires one additional property) -->
+				   <div id="INFORMIX_Fields">
+					   <label for="srcInfHostInput">Host:</label>
+					   <input type="text" name="srcInfHostInput" id="srcInfHostInput" value="" /><br>
+	
+					   <label for="srcInfPortInput">Port:</label>
+					   <input type="text" name="srcInfPortInput" id="srcInfPortInput" value="" /><br>
+	
+					   <label for="srcInfSchemaInput">Schema:</label>
+					   <input type="text" name="srcInfSchemaInput" id="srcInfSchemaInput" value="" /><br>
+					   
+					   <label for="srcInfUsernameInput">User name:</label>
+					   <input type="text" name="srcInfUsernameInput" id="srcInfUsernameInput" value="" /><br>
+					   
+					   <label for="srcInfPasswordInput">Password:</label>
+					   <input type="password" name="srcInfPasswordInput" id="srcInfPasswordInput" value=""/><br>
+					   
+				   		<label for="srcInfDatabase">Database:</label>
+                   		<input type="text" name="srcInfDatabaseInput" id="srcInfDatabaseInput" value="" /><br>
+                   		
+                   		<label for="srcInfServer">Server:</label>
+                   		<input type="text" name="srcInfServerInput" id="srcInfServerInput" value="" /><br>
+                   		
+				   	   <label for="srcInfTableInput">Table:</label>
+				       <input type="text" name="srcInfTableInput" id="srcInfTableInput" value="" /><br>    					   
+				   
+                    </div>
+                    
+                    
+                    <div id="secureGateway">
+                    	<label for="sgCheckBox">Uses secure Gateway</label> 
+						<input type="checkbox" name="sgCheckBox" id="sgCheckBox" onClick="toggleGatewaysList();" value=""><br>
+					<div id="secureGatewayList">
+						<label for="secureGateway">Secure Gateways:</label> 
+						<!-- <select	name="secureGateway" id="sgList"></select>  -->
+					</div>
+                    </div>
+					
+				</form>
+			</div>
+			
+		</div>
+		
+		<div class="contentContainer">
+			<h1>Target</h1>
+
+			<div id="inputContainer" class="valueContainer processed">
+				<form id="trgConnectionForm">
+					<label for="targetSystemSelect">Target connection:</label> 
+					<select	name="targetSystemSelect" id="targetSystemSelect">
+						<option value="SQLDB" selected>SQL Database</option>
+						<option value="DASHDB">dashDB</option> 			
+						<!-- <option value="HADOOP">Analytics for Hadoop</option> -->
+						<option value="CLOUDANT">Cloudant Database</option>
+						<option value="WATSON">IBM Watson Analytics (csv)</option>				
+					</select><br> 
+					
+					<!--  TARGET: Show fields for SQLDB, DashDB -->
+				    <div id="TRG_SQL_DASHDB_Fields">
+						<label for="targetHostInput">Host:</label> 
+						<input type="text"	name="targetHostInput" id="targetHostInput" value=""><br> 
+						
+						<label for="targetPortInput">Port:</label> 
+						<input type="text" name="targetPortInput" id="targetPortInput" value=""><br>
+						 
+						<label for="targetDatabaseInput">Database:</label> 
+						<input type="text" name="targetDatabaseInput" id="targetDatabaseInput" value=""><br>
+	
+						<label for="targetSchemaInput">Schema:</label> 
+						<input type="text" name="targetSchemaInput" id="targetSchemaInput" value=""><br> 
+						
+						<label for="targetUsernameInput">User name:</label> 
+						<input type="text"	name="targetUsernameInput" id="targetUsernameInput" value=""><br>
+	
+						<label for="targetPasswordInput">Password:</label> 
+						<input type="password" name="targetPasswordInput" id="targetPasswordInput" value=""><br>
+						
+				   		<label for="targetTableInput">Table:</label> 
+				   		<input type="text" name="targetTableInput" id="targetTableInput" value=""><br>							
+
+					</div>
+					
+             		<!--  TARGET: Show fields for HADOOP 	-->
+				   <div id="TRG_HADOOP_Fields">
+					   <label for="targetHadoopHostInput">Host:</label>
+					   <input type="text" name="targetHadoopHostInput" id="targetHadoopHostInput" value="" /><br>
+	
+					   <label for="targetHadoopPortInput">Port:</label>
+					   <input type="text" name="targetHadoopPortInput" id="targetHadoopPortInput" value="" /><br>
+					   
+					   <label for="targetHadoopUsernameInput">User name:</label>
+					   <input type="text" name="targetHadoopUsernameInput" id="targetHadoopUsernameInput" value="" /><br>
+					   
+					   <label for="targetHadoopPasswordInput">Password:</label>
+					   <input type="password" name="targetHadoopPasswordInput" id="targetHadoopPasswordInput" value=""/><br>
+					   
+					   <label for="targetHadoopFolderPathInput">Folder path:</label>
+					   <input type="text" name="targetHadoopFolderPathInput" id="targetHadoopFolderPathInput" value="" /><br>
+					   
+				   	   <label for="targetHadoopTableInput">File:</label> 
+				   	   <input type="text" name="targetHadoopTableInput" id="targetHadoopTableInput" value=""><br>						   
+				   
+				   </div>
+				   
+					<!--  TARGET: Show fields for CLOUDANT DB -->
+				    <div id="TRG_CLOUDANTDB_Fields">
+						<label for="targetCLDHostInput">Host:</label> 
+						<input type="text"	name="targetCLDHostInput" id="targetCLDHostInput" value=""><br> 
+						<!-- 
+						<label for="targetCLDPortInput">Port:</label> 
+						<input type="text" name="targetCLDPortInput" id="targetCLDPortInput" value=""><br>
+						 
+						<label for="targetCLDDatabaseInput">Database:</label> 
+						<input type="text" name="targetCLDDatabaseInput" id="targetCLDDatabaseInput" value=""><br>
+	
+						<label for="targetCLDSSLInput">SSL:</label> 
+						<input type="checkbox" name="targetCLDSSLInput" id="targetCLDSSLInput" value=""><br> 
+						 -->
+						<label for="targetCLDUsernameInput">User name:</label> 
+						<input type="text"	name="targetCLDUsernameInput" id="targetCLDUsernameInput" value=""><br>
+	
+						<label for="targetCLDPasswordInput">Password:</label> 
+						<input type="password" name="targetCLDPasswordInput" id="targetCLDPasswordInput" value=""><br>
+						
+				   		<label for="targetCLDTableInput">File:</label> 
+				   		<input type="text" name="targetCLDTableInput" id="targetCLDTableInput" value=""><br>							
+
+					</div>	
+					
+										<!--  TARGET: Show fields for WATSON ANALYTICS  -->
+				    <div id="TRG_WATSONDB_Fields">
+
+						<label for="targetWAUsernameInput">User name:</label> 
+						<input type="text"	name="targetWAUsernameInput" id="targetWAUsernameInput" value=""><br>
+	
+						<label for="targetWAPasswordInput">Password:</label> 
+						<input type="password" name="targetWAPasswordInput" id="targetWAPasswordInput" value=""><br>
+						
+				   		<label for="targetWATableInput">File:</label> 
+				   		<input type="text" name="targetWATableInput" id="targetWATableInput" value=""><br>							
+
+					</div>				   
+								   
+					
+				</form>
+			</div>
+		</div>
+	<br>
+	
+		<div class="contentContainer" style="float: left;">
+	
+			<div  id="buttonContainer" class="buttonContainer processed" >
+				<input type="button" name="submit" id="createBtn" class="submitBtn" 
+					value="Load Data" onclick="createAndRunActivity();" />			
+					
+				<input type="button" name="submit" id="logBtn" class="submitBtn"
+					value="View Log" onclick="viewLog();" disabled/>		
+					
+				<input type="button" name="submit" id="PayloadBtn" class="submitBtn"
+					value="View Payload" onclick="viewPayload();" />					
+				<input type="button" name="submit" id="resetBtn" class="submitBtn"
+                    value="Clear Results" onclick="reset();" /> 			
+			</div>	
+			
+			<div id="infoMsgContainer" class="resultMessageContainer" style="display: none;">
+				<table class="resultMessageTable" id="successTable" cellspacing="0">
+					<tbody>
+						<tr>
+							<td class="firstcol" valign="TOP"><img style="margin-left: 20px; margin-top: 15px;" src="resources/images/info.png" /></td>
+							<td><font id="InfoMsg">This is info message.</font></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>	
+		
+			<div id="successContainer" class="resultMessageContainer" style="display: none;">
+				<table class="resultMessageTable" id="successTable" cellspacing="0">
+					<tbody>
+						<tr>
+							<td class="firstcol"><img style="display:block" src="resources/images/success.png" /></td>
+							<td><font id="successMsg">The data was loaded successfully.</font></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div id="failureContainer" class="resultMessageContainer" style="display: none;">
+				<table id="failureTable" class="resultMessageTable failureTable" cellspacing="0">
+					<tbody>
+						<tr>
+							<td class="firstcol"><img style="display:block" src="resources/images/fail.png" /></td>
+							<td><font id="errorMsg">The data was not loaded.</font></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<br>
+		
+		<div id="resultContainer" class="resultContainer" style="display: none;">
+			<textarea rows="11" cols="100" id="resultText" readonly></textarea>
+		</div>
+		
+		<div id="InfoContainer" class="InfoContainer" style="display: none;">
+              <br>To view requests and responses for the REST API, use the developer tools in your browser.<br>
+              For example, complete these steps to open some common developer tools:
+              <ul>
+                <li>
+                    <b>Internet Explorer</b> - Click Tools &#62; F12 developer tools, click Network, and then click Start Capturing.
+                </li>
+                <li>
+                    <b>Firefox</b> - Click Tools &#62; Web Developer &#62; Network.
+                </li>
+                <li>
+                    <b>Chrome</b> - Open Chrome developer tools by pressing Ctrl+Shift+I, and then click the Network tab.
+                </li>
+                <li>
+                    <b>Safari</b> - Open Safari Web Inspector by pressing Command-Option-I, and then click Timelines.
+                </li>
+              </ul>
+              <span>For detailed information about the API requests and responses, see the
+                <a target="_blank" href="https://www.ng.bluemix.net/docs/api/content/api/dataworks/data-load/index.html">Data Load REST API Reference.</a>
+              </span>
+		</div>		
+		
+		<div id="outputContainer" class="valueContainer outputContainer">
+			<img id="loadingImg" style="display: none;" src="resources/images/loading.gif" >
+		</div>
+		
+		<script>
+
+			// ****************************************************  
+			// * The following source-target combinations are not currently supported:
+			// * ORACLE ODBC -> IBM Watson Analytics
+			// ****************************************************		
+			
+	function populateGateways() {
+	$.ajax({
+		url : "refinery/activities/" +  "gateways" ,
+		headers : {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json'
+		},
+		success : function(data) { 			
+			var parentDiv = document.getElementById ("secureGatewayList");
+			parentDiv.innerHTML = "";
+			   var selectElement = '<label for="secureGateway">Secure Gateways:</label><select id="sgList">';
+			   for (var i = 0, len = data.length; i < len; i++) {
+			     selectElement+= '<option value="'+data[i].name+'">'+data[i].name+'</option>';
+			   }
+			   selectElement += '</select>';
+			   parentDiv.innerHTML+=selectElement;
+			 
+		},
+		error : function(data) {
+			$('#createBtn').prop('disabled', false);
+			$('#logBtn').prop('disabled', true);
+			
+			$("#loadingImg").hide();
+			displayErrorMessage("Error running the activity:<br/>" + data.responseText);
+		}
+	});
+};
+	
+			function verifySupport( src, trg) {
+				$("#failureContainer").hide();
+				$("#successContainer").hide();
+				$('#InfoContainer').hide(); 
+				$('#infoMsgContainer').hide();
+				
+				// show an error if un-supported combinations are chosen
+				if( (src == "ORACLEODBC" && trg == "WATSON") )	{
+                		$('#errorMsg').html('Data cannot be loaded from the selected source to the selected target. For a list of supported source and<br>' +
+                		  'target combinations, see the '+
+                		  '<a target="_blank" href="https://www.ng.bluemix.net/docs/#services/dataworks1/index-gentopic1.html">Getting Started documentation for Data Load.</a>'); 
+                		
+						$("#failureContainer").show();
+						$('#createBtn').prop('disabled', true);		// disable the Load Data button
+				} else {
+						// source-target combination is OK
+						$('#createBtn').prop('disabled', false);	// enable the Load Data button
+						
+						// give instruction on behaviour of the app, when certain sources and targets are used
+						var msgToShow='';
+						if( src == "AMAZONS3" || src == "HADOOP" || src == "OBJECTSTORAGE") {
+							msgToShow = '<p><b>SOURCE:</b> For the selected source, the input data for the sample application must be in a .csv file that has a column of<br/>' +
+										'the integer data type followed by a column of the VARCHAR data type. Each data row must end with &lt;CR&gt;&lt;LF&gt; characters. <br/>' +
+										'The following example shows the required format:<br/>' + 
+										'10,aa&lt;CR&gt;&lt;LF&gt;<br/>' +
+										'20,bbbb&lt;CR&gt;&lt;LF&gt;<br/>' +
+										'30,cccccc&lt;CR&gt;&lt;LF&gt;';
+						} else if( src == "SALESFORCE") {
+							msgToShow = '<p><b>SOURCE:</b> For the selected source, if there is a security token it should be appended to the end of the password';
+							}
+						if( trg == "SQLDB" || trg == "DASHDB") {
+							msgToShow = msgToShow + 
+										'<p><b>TARGET:</b> For the selected target, if the target table does not exist, the table is created. If the target table exists,</br>' +
+										'data is appended to the existing table.';
+							}
+						
+						if( trg == "CLOUDANT") {
+							msgToShow = msgToShow + 
+										'<p><b>TARGET:</b> For the selected target, if the target database does not exist, the database is created. If the target database exists,</br>' +
+										'it is updated.';
+							}
+						
+						if( trg == "WATSON") {
+							msgToShow = msgToShow + 
+										'<p><b>TARGET:</b> For the selected target, if the target file does not exist, the file is created. If the target file exists,</br>' +
+										'the data load fails.';
+							}
+						
+						if( msgToShow.trim() ){
+							$('#InfoMsg').html( msgToShow );
+							$("#infoMsgContainer").show();
+						}
+				}
+            } 
+              
+			// ****************************************************  
+			// * Function called when the SOURCE drop down changes
+			// * Make visible the source fields required in UI     
+			// ****************************************************			       
+            $("#sourceSystemSelect").change( function() {
+                    $("#SQL_DASHDB_Fields").hide();
+            		$("#ORACLEODBC_Fields").hide();
+            		$("#HADOOP_Fields").hide();
+					$("#OBJECTSTORAGE_Fields").hide();            		
+            		$("#AMAZONS3_Fields").hide();
+            		$("#SALESFORCE_Fields").hide();
+            		$("#ODBC_Fields").hide();            		
+            		$("#INFORMIX_Fields").hide();
+					$('#secureGateway').hide();
+            		$('#sgCheckBox').attr('checked', false);
+            		$('#secureGatewayList').hide();
+            		            		
+            		
+		            var src = $(this).val();
+	                if (src == "SQLDB" || src == "DASHDB" ) {
+	                    $("#SQL_DASHDB_Fields").show();
+		            
+	                } else if (src == "ORACLEODBC") {
+	                    $("#ORACLEODBC_Fields").show();
+	                    populateGateways();
+	                    $('#secureGateway').show();
+	                
+	                } else if( src == "HADOOP") {
+						$("#HADOOP_Fields").show();
+	                
+	                } else if( src == "OBJECTSTORAGE") {
+						$("#OBJECTSTORAGE_Fields").show();
+	                
+	                } else if( src == "AMAZONS3") {
+						$("#AMAZONS3_Fields").show();
+	          		} else if( src == "SALESFORCE") {
+	          		    $("#SALESFORCE_Fields").show();
+	          		    
+	          		}else if( src == "REDSHIFT") {
+	          			$("#ODBC_Fields").show();
+	          		    
+	          		} else if( src == "MYSQL" ||
+	          		           src == "HIVE" || src == "SYBASE" ||
+	          		           src == "SYBASEIQ" || src == "GREENPLUM" ||
+	          		           src == "PROGRESS" || src == "IMPALA") {
+	          			$("#ODBC_Fields").show();
+	          			populateGateways();
+	          			$('#secureGateway').show();
+	          			
+	          		} else if( src == "INFORMIX") {
+   	           			$("#INFORMIX_Fields").show();
+   	           			populateGateways();
+   	           			$('#secureGateway').show();
+	          		}
+	          		var trg = $("#targetSystemSelect").val();
+	          		verifySupport(src, trg);
+             }).change();
+            
+			// ****************************************************  
+			// * Function called when the TARGET drop down changes
+			// * Make visible the target fields required in UI
+			// ****************************************************			
+            $("#targetSystemSelect").change(function() {
+                    $("#TRG_SQL_DASHDB_Fields").hide();
+            		$("#TRG_HADOOP_Fields").hide();
+            		$("#TRG_CLOUDANTDB_Fields").hide();
+            		$("#TRG_WATSONDB_Fields").hide();
+            		
+		            var trg = $(this).val();
+	                if (trg == "SQLDB" || trg == "DASHDB") {
+	                    $("#TRG_SQL_DASHDB_Fields").show();
+		            
+	                } else if( trg == "HADOOP") {
+						$("#TRG_HADOOP_Fields").show();
+						
+	                } else if( trg == "CLOUDANT") {
+						$("#TRG_CLOUDANTDB_Fields").show();
+						
+	                } else if( trg == "WATSON") {
+						$("#TRG_WATSONDB_Fields").show();
+	                } 
+	          		var src = $("#sourceSystemSelect").val();
+	          		verifySupport(src, trg);
+             }).change();
+            
+        </script>
+	</body>
+</html>
